@@ -149,7 +149,7 @@ bool Tablero::comprobar_diagonal_superior() {
     // 3-0  2-1  1-2  0-3
     // 4-0  3-1  2-2  1-3  0-4
     // 5-0  4-1  3-2  2-3  1-4  0-5 
-    for(int f = 3; f < 6; f++) {
+    for(int f = MIN_FICHAS_EN_RAYA - 1; f < 6; f++) {
         int contador = 0;
         string color = VACIO;
         for(int c = 0 ; c <= f ; c++) { 
@@ -180,7 +180,7 @@ bool Tablero::comprobar_diagonal_inferior() {
     for(int c = 1; c < 4; c++) {
         int contador = 0;
         string color = VACIO;
-        for(int f = 5; f >= c - 1 ; f--) {
+        for(int f = ALTO - 1; f >= c - 1 ; f--) {
             Ficha* ficha = tablero[f][c + (ALTO - f - 1)];
             if(ficha) {
                 if(color != ficha -> obtener_color()) {
