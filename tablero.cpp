@@ -6,6 +6,7 @@ Tablero::Tablero() {
         tablero[i] = new Ficha*[ANCHO];
     }
     inicializar();
+    color_ganador = "";
 }
 
 Tablero::~Tablero() {
@@ -56,6 +57,9 @@ bool Tablero::insertar_ficha(Ficha* ficha, int columna) {
         }
         fila--;
     }
+    if(!inserto) {
+        delete ficha;
+    }
     return inserto;
 }
 
@@ -80,15 +84,20 @@ bool Tablero::esta_lleno() {
     return lleno;
 }
 
+string Tablero::obtener_color_ganador() {
+    return color_ganador;
+}
+
 bool Tablero::comprobar_ganador_filas() {
     bool hay_ganador = false;
     for(int f = 0; f < ALTO; f++) {
         int contador = 0;
         string color = VACIO;
         for(int c = 0; c < ANCHO; c++) {
-            if(tablero[f][c]) {
-                if(color != tablero[f][c] -> obtener_color()) {
-                    color = tablero[f][c] -> obtener_color();
+            Ficha* ficha = tablero[f][c];
+            if(ficha) {
+                if(color != ficha -> obtener_color()) {
+                    color = ficha -> obtener_color();
                     contador = 1;
                 }
                 else {
@@ -96,6 +105,7 @@ bool Tablero::comprobar_ganador_filas() {
                 }
                 if(contador >= MIN_FICHAS_EN_RAYA) {
                     hay_ganador = true;
+                    color_ganador = ficha -> obtener_color();
                 }
             }
         }
@@ -109,9 +119,10 @@ bool Tablero::comprobar_ganador_columnas() {
         int contador = 0;
         string color = VACIO;
         for(int f = 0; f < ALTO; f++) {
-            if(tablero[f][c]) {
-                if(color != tablero[f][c] -> obtener_color()) {
-                    color = tablero[f][c] -> obtener_color();
+            Ficha* ficha = tablero[f][c];
+            if(ficha) {
+                if(color != ficha -> obtener_color()) {
+                    color = ficha -> obtener_color();
                     contador = 1;
                 }
                 else {
@@ -119,6 +130,7 @@ bool Tablero::comprobar_ganador_columnas() {
                 }
                 if(contador >= MIN_FICHAS_EN_RAYA) {
                     hay_ganador = true;
+                    color_ganador = ficha -> obtener_color();
                 }
             }
         }
@@ -141,9 +153,10 @@ bool Tablero::comprobar_diagonal_superior() {
         int contador = 0;
         string color = VACIO;
         for(int c = 0 ; c <= f ; c++) { 
-            if(tablero[f - c][c]) {
-                if(color != tablero[f - c][c] -> obtener_color()) {
-                    color = tablero[f - c][c] -> obtener_color();
+            Ficha* ficha = tablero[f - c][c];
+            if(ficha) {
+                if(color != ficha -> obtener_color()) {
+                    color = ficha -> obtener_color();
                     contador = 1;
                 }
                 else {
@@ -151,6 +164,7 @@ bool Tablero::comprobar_diagonal_superior() {
                 }
                 if(contador >= MIN_FICHAS_EN_RAYA) {
                     hay_ganador = true;
+                    color_ganador = ficha -> obtener_color();
                 }
             }
         }
@@ -167,9 +181,10 @@ bool Tablero::comprobar_diagonal_inferior() {
         int contador = 0;
         string color = VACIO;
         for(int f = 5; f >= c - 1 ; f--) {
-            if(tablero[f][c + (ALTO - f - 1)]) {
-                if(color != tablero[f][c + (ALTO - f - 1)] -> obtener_color()) {
-                    color = tablero[f][c + (ALTO - f - 1)] -> obtener_color();
+            Ficha* ficha = tablero[f][c + (ALTO - f - 1)];
+            if(ficha) {
+                if(color != ficha -> obtener_color()) {
+                    color = ficha -> obtener_color();
                     contador = 1;
                 }
                 else {
@@ -177,6 +192,7 @@ bool Tablero::comprobar_diagonal_inferior() {
                 }
                 if(contador >= MIN_FICHAS_EN_RAYA) {
                     hay_ganador = true;
+                    color_ganador = ficha -> obtener_color();
                 }
             }
         }
